@@ -34,6 +34,32 @@ namespace StokTakipAdonet
             return categories;
         }
 
+
+        public List<Category> GetSearchedCategories(string searchText)
+        {
+            var categories = new List<Category>();
+            ConnectionControl();
+            SqlCommand sqlCommand = new SqlCommand($"Select * from Categories where CategoryName like '%{searchText}%' or Description like '%{searchText}%'", _connection);
+
+            SqlDataReader reader = sqlCommand.ExecuteReader(); // sql sorgusunu çalıştırıyoruz ve verileri okuyoruz
+            while (reader.Read())
+            {
+                var category = new Category
+                {
+                    Id = (Int64)reader["Id"],
+                    CategoryName = Convert.ToString(reader["CategoryName"]),
+                    Description = Convert.ToString(reader["Description"])
+                };
+
+                categories.Add(category);
+            }
+
+            reader.Close(); // SqlDataReader'ı kapatıyoruz
+            _connection.Close(); // bağlantıyı kapatıyoruz
+            sqlCommand.Dispose(); // SqlCommand nesnesini bellekten temizliyoruz
+            return categories;
+        }
+
         public int Add(Category category)
         {
             int sonuc = 0;
@@ -67,7 +93,7 @@ namespace StokTakipAdonet
             return sonuc;
         }
 
-        public int Delete(int Id)
+        public int Delete(long Id)
         {
             int sonuc = 0;
 

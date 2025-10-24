@@ -143,7 +143,7 @@
             this.MainMenuStrip = this.menuStripMain;
             this.Name = "EnterScreen";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Kullanıcı Giriş Ekranı (Stok Takibi)";
+            this.Text = "Kullanıcı Giriş Ekranı EF (Stok Takibi)";
             this.Load += new System.EventHandler(this.EnterScreen_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();

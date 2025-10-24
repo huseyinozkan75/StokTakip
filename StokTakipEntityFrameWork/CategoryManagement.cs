@@ -1,4 +1,5 @@
-﻿using System;
+﻿using StokTakipEntityFrameWork;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -17,7 +18,7 @@ namespace StokTakipAdonet
             InitializeComponent();
         }
 
-        CategoryDAL categoryDal = new CategoryDAL();
+        DatabaseContext dbContext = new DatabaseContext();
         private void CategoryManagement_Load(object sender, EventArgs e)
         {
             RefreshScreen();
@@ -26,7 +27,7 @@ namespace StokTakipAdonet
 
         private void RefreshScreen()
         {
-            dgwCategories.DataSource = categoryDal.GetCategories();
+            dgwCategories.DataSource = dbContext.Categories.ToList();
             btnAdd.Enabled = true;
             btnUpdate.Enabled = false;
             btnDelete.Enabled = false;
@@ -51,20 +52,24 @@ namespace StokTakipAdonet
                 return; 
             }
 
-            Category category = new Category
+            Categories category = new Categories
             {
                 CategoryName = txtCategory.Text,
                 Description = txtAciklama.Text
             };
 
-            int sonuc = categoryDal.Add(category);
-            
+            dbContext.Categories.Add(category);
+
+            int sonuc = dbContext.SaveChanges();
+
+            RefreshScreen();
+
             if (sonuc > 0)
                 MessageBox.Show("Kategori eklenmiştir");
             else
                 MessageBox.Show("Kayıt ekleme başarısız");
 
-            RefreshScreen();
+            
         }
 
         private void btnUpdate_Click(object sender, EventArgs e)
@@ -75,14 +80,12 @@ namespace StokTakipAdonet
                 return;
             }
 
-            Category category = new Category
-            {
-                Id = (long) dgwCategories.CurrentRow.Cells["Id"].Value,
-                CategoryName = txtCategory.Text,
-                Description = txtAciklama.Text
-            };
+            var existingCategory = dbContext.Categories.Find((long)dgwCategories.CurrentRow.Cells["Id"].Value);
 
-            int sonuc = categoryDal.Update(category);
+            existingCategory.CategoryName = txtCategory.Text;
+            existingCategory.Description = txtAciklama.Text;
+
+            int sonuc = dbContext.SaveChanges();
 
             if (sonuc > 0)
                 MessageBox.Show("Kategori güncellenmiştir");
@@ -101,7 +104,9 @@ namespace StokTakipAdonet
                 return;
             }
 
-            int sonuc = categoryDal.Delete((long)dgwCategories.CurrentRow.Cells["Id"].Value);
+            dbContext.Categories.Remove(dbContext.Categories.Find((long)dgwCategories.CurrentRow.Cells["Id"].Value));
+
+            int sonuc = dbContext.SaveChanges();
 
             if (sonuc > 0)
                 MessageBox.Show("Kategori silinmiştir");
@@ -114,12 +119,13 @@ namespace StokTakipAdonet
         private void btnAra_Click(object sender, EventArgs e)
         {
 
-            dgwCategories.DataSource = categoryDal.GetSearchedCategories(txtAra.Text);
+            // dgwCategories.DataSource = categoryDal.GetSearchedCategories(txtAra.Text);
+
         }
 
         private void txtAra_TextChanged(object sender, EventArgs e)
         {
-            dgwCategories.DataSource = categoryDal.GetSearchedCategories(txtAra.Text);
+            // dgwCategories.DataSource = categoryDal.GetSearchedCategories(txtAra.Text);
         }
     }
 }

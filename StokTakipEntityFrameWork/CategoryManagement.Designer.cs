@@ -34,11 +34,11 @@
             this.txtCategory = new System.Windows.Forms.TextBox();
             this.txtAciklama = new System.Windows.Forms.TextBox();
             this.gbCategory = new System.Windows.Forms.GroupBox();
+            this.txtAra = new System.Windows.Forms.TextBox();
+            this.btnAra = new System.Windows.Forms.Button();
             this.btnDelete = new System.Windows.Forms.Button();
             this.btnUpdate = new System.Windows.Forms.Button();
             this.btnAdd = new System.Windows.Forms.Button();
-            this.txtAra = new System.Windows.Forms.TextBox();
-            this.btnAra = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgwCategories)).BeginInit();
             this.gbCategory.SuspendLayout();
             this.SuspendLayout();
@@ -105,6 +105,24 @@
             this.gbCategory.TabStop = false;
             this.gbCategory.Text = " Kategori Yönetimi ";
             // 
+            // txtAra
+            // 
+            this.txtAra.Location = new System.Drawing.Point(0, 24);
+            this.txtAra.Name = "txtAra";
+            this.txtAra.Size = new System.Drawing.Size(305, 22);
+            this.txtAra.TabIndex = 1;
+            this.txtAra.TextChanged += new System.EventHandler(this.txtAra_TextChanged);
+            // 
+            // btnAra
+            // 
+            this.btnAra.Location = new System.Drawing.Point(311, 24);
+            this.btnAra.Name = "btnAra";
+            this.btnAra.Size = new System.Drawing.Size(104, 22);
+            this.btnAra.TabIndex = 2;
+            this.btnAra.Text = "ARA";
+            this.btnAra.UseVisualStyleBackColor = true;
+            this.btnAra.Click += new System.EventHandler(this.btnAra_Click);
+            // 
             // btnDelete
             // 
             this.btnDelete.Location = new System.Drawing.Point(271, 190);
@@ -135,24 +153,6 @@
             this.btnAdd.UseVisualStyleBackColor = true;
             this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
             // 
-            // txtAra
-            // 
-            this.txtAra.Location = new System.Drawing.Point(0, 24);
-            this.txtAra.Name = "txtAra";
-            this.txtAra.Size = new System.Drawing.Size(305, 22);
-            this.txtAra.TabIndex = 1;
-            this.txtAra.TextChanged += new System.EventHandler(this.txtAra_TextChanged);
-            // 
-            // btnAra
-            // 
-            this.btnAra.Location = new System.Drawing.Point(311, 24);
-            this.btnAra.Name = "btnAra";
-            this.btnAra.Size = new System.Drawing.Size(104, 22);
-            this.btnAra.TabIndex = 2;
-            this.btnAra.Text = "ARA";
-            this.btnAra.UseVisualStyleBackColor = true;
-            this.btnAra.Click += new System.EventHandler(this.btnAra_Click);
-            // 
             // CategoryManagement
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -162,7 +162,7 @@
             this.Controls.Add(this.dgwCategories);
             this.Name = "CategoryManagement";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Kategori Yönetimi";
+            this.Text = "Kategori Yönetimi EF";
             this.Load += new System.EventHandler(this.CategoryManagement_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgwCategories)).EndInit();
             this.gbCategory.ResumeLayout(false);

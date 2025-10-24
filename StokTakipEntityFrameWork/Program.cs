@@ -1,10 +1,11 @@
-﻿using System;
+﻿using StokTakipAdonet;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace StokTakipAdonet
+namespace StokTakipEntityFrameWork
 {
     internal static class Program
     {

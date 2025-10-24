@@ -254,7 +254,7 @@
             this.Controls.Add(this.gbCategory);
             this.Controls.Add(this.dgwProducts);
             this.Name = "ProductManagement";
-            this.Text = "Ürün Yönetimi";
+            this.Text = "Ürün Yönetimi EF";
             this.Load += new System.EventHandler(this.ProductManagement_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgwProducts)).EndInit();
             this.gbCategory.ResumeLayout(false);

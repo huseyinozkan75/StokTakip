@@ -1,4 +1,5 @@
-﻿using System;
+﻿using StokTakipEntityFrameWork;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -16,7 +17,9 @@ namespace StokTakipAdonet
         {
             InitializeComponent();
         }
-        UserDAL userDal = new UserDAL();
+
+        DatabaseContext dbContext = new DatabaseContext();
+
 
         private void EnterScreen_Load(object sender, EventArgs e)
         {
@@ -26,8 +29,7 @@ namespace StokTakipAdonet
 
         private void btnUserCheck_Click(object sender, EventArgs e)
         {
-
-            List<User> users = userDal.GetUsers();
+            List<Users> users = dbContext.Users.ToList();
 
             foreach (var user in users)
             {
@@ -43,7 +45,6 @@ namespace StokTakipAdonet
 
             MessageBox.Show("Giriş Başarısız!");
             return;
-
         }
 
         private void kategorilerToolStripMenuItem_Click(object sender, EventArgs e)

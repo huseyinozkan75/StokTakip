@@ -1,7 +1,9 @@
-﻿using System;
+﻿using StokTakipEntityFrameWork;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.Entity;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -17,19 +19,17 @@ namespace StokTakipAdonet
             InitializeComponent();
         }
         
-        ProductDAL ProductDAL = new ProductDAL();
+        DatabaseContext dbContext = new DatabaseContext();
 
         private void RefreshScreen()
         {
-            dgwProducts.DataSource = ProductDAL.GetProducts();
+            dgwProducts.DataSource = dbContext.Products.ToList();
 
-            CategoryDAL categoryDal = new CategoryDAL();
-            cbCategory.DataSource = categoryDal.GetCategories();
+            cbCategory.DataSource = dbContext.Categories.ToList();
             cbCategory.DisplayMember = "CategoryName";
             cbCategory.ValueMember = "Id";
 
-            BrandDAL brandDal = new BrandDAL();
-            cbBrand.DataSource = brandDal.GetAllBrands();
+            cbBrand.DataSource = dbContext.Brands.ToList();
             cbBrand.DisplayMember = "BrandName";
             cbBrand.ValueMember = "Id";
 
@@ -50,7 +50,7 @@ namespace StokTakipAdonet
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            Product product = new Product
+            Products product = new Products
             {
                 ProductName = txtProduct.Text,
                 Status = cbDurum.Checked,
@@ -62,34 +62,30 @@ namespace StokTakipAdonet
                 Price = Convert.ToDecimal( txtPrice.Text)
             };
 
-            int sonuc = ProductDAL.Add(product);
+            int sonuc = dbContext.SaveChanges();
+
+            RefreshScreen();
 
             if (sonuc > 0)
                 MessageBox.Show("Ürün eklenmiştir");
             else
                 MessageBox.Show("Kayıt ekleme başarısız");
 
-            RefreshScreen();
-
-
         }
 
         private void btnUpdate_Click(object sender, EventArgs e)
         {
+            var existingProduct = dbContext.Products.Find((long)dgwProducts.CurrentRow.Cells["Id"].Value);
 
-            Product product = new Product
-            {
-                Id = (long)dgwProducts.CurrentRow.Cells["Id"].Value,
-                ProductName = txtProduct.Text,
-                Status = cbDurum.Checked,
-                Description = txtAciklama.Text,
-                CategoryID = (long)cbCategory.SelectedValue,
-                BrandID = (long)cbBrand.SelectedValue,
-                StocksCount = Convert.ToInt32(txtStocksCount.Text),
-                Price = Convert.ToDecimal(txtPrice.Text)
-            };
-
-            int sonuc = ProductDAL.Update(product);
+            existingProduct.ProductName = txtProduct.Text;
+            existingProduct.Status = cbDurum.Checked;
+            existingProduct.Description = txtAciklama.Text;
+            existingProduct.CategoryID = (long)cbCategory.SelectedValue;
+            existingProduct.BrandID = (long)cbBrand.SelectedValue;
+            existingProduct.StocksCount = Convert.ToInt32(txtStocksCount.Text);
+            existingProduct.Price = Convert.ToDecimal(txtPrice.Text);
+           
+            int sonuc = dbContext.SaveChanges();
 
             if (sonuc > 0)
                 MessageBox.Show("Ürün güncellenmiştir");
@@ -97,7 +93,6 @@ namespace StokTakipAdonet
                 MessageBox.Show("Kayıt ekleme başarısız");
 
             RefreshScreen();
-
         }
 
         private void dgwProducts_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -118,7 +113,7 @@ namespace StokTakipAdonet
 
         private void btnAra_Click(object sender, EventArgs e)
         {
-            dgwProducts.DataSource = ProductDAL.GetSearchedProducts(txtAra.Text);
+            // dgwProducts.DataSource = ProductDAL.GetSearchedProducts(txtAra.Text);
         }
     }
 }

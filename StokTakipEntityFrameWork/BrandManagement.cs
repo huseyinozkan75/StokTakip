@@ -1,4 +1,5 @@
-﻿using System;
+﻿using StokTakipEntityFrameWork;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -17,11 +18,11 @@ namespace StokTakipAdonet
             InitializeComponent();
         }
 
-        BrandDAL brandDal = new BrandDAL();
+        DatabaseContext dbContext = new DatabaseContext();
 
         private void RefreshScreen()
         {
-            dgwBrands.DataSource = brandDal.GetAllBrands();
+            dgwBrands.DataSource= dbContext.Brands.ToList();
             btnAdd.Enabled = true;
             dtpCreateDate.Value = DateTime.Now;
             btnUpdate.Enabled = false;
@@ -52,15 +53,12 @@ namespace StokTakipAdonet
                 return;
             }
 
-            Brand brand = new Brand
-            {
-                BrandName = txtBrand.Text,
-                Description = txtDescription.Text,
-                Status = cbStatus.Checked,
-                Id= (long)dgwBrands.CurrentRow.Cells["Id"].Value
-            };
-
-            int sonuc = brandDal.Update(brand);
+            var brand = dbContext.Brands.Find((long) dgwBrands.CurrentRow.Cells["Id"].Value);
+            brand.BrandName = txtBrand.Text;
+            brand.Description = txtDescription.Text;
+            brand.Status = cbStatus.Checked;
+            
+            int sonuc = dbContext.SaveChanges();
 
             if (sonuc > 0)
                 MessageBox.Show("Marka güncellenmiştir");
@@ -77,8 +75,9 @@ namespace StokTakipAdonet
                 MessageBox.Show("Marka ya da Açıklama alanı boş olamaz!");
                 return;
             }
+        
 
-            Brand brand = new Brand
+            Brands brand = new Brands
             {
                 BrandName = txtBrand.Text,
                 Description = txtDescription.Text,
@@ -86,8 +85,9 @@ namespace StokTakipAdonet
                 CreateDate = DateTime.Now
             };
 
+            dbContext.Brands.Add(brand);
 
-            int sonuc = brandDal.Add(brand);
+            int sonuc = dbContext.SaveChanges();
 
             if (sonuc > 0)
                 MessageBox.Show("Marka eklenmiştir");
@@ -116,14 +116,18 @@ namespace StokTakipAdonet
                 return;
             }
 
-            int sonuc = brandDal.Delete((long)dgwBrands.CurrentRow.Cells["Id"].Value);
+            dbContext.Brands.Remove(dbContext.Brands.Find((long)dgwBrands.CurrentRow.Cells["Id"].Value));
+
+            int sonuc = dbContext.SaveChanges();
+
+            RefreshScreen();
 
             if (sonuc > 0)
                 MessageBox.Show("Marka silinmiştir");
             else
                 MessageBox.Show("Kayıt silme başarısız");
 
-            RefreshScreen();
+            
         }
     }
 }

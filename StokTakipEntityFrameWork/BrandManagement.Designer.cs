@@ -185,7 +185,7 @@
             this.Controls.Add(this.label3);
             this.Name = "BrandManagement";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Marka Yönetimi";
+            this.Text = "Marka Yönetimi EF";
             this.Load += new System.EventHandler(this.BrandManagement_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgwBrands)).EndInit();
             this.groupBox1.ResumeLayout(false);
