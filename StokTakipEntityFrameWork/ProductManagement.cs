@@ -55,12 +55,14 @@ namespace StokTakipAdonet
                 ProductName = txtProduct.Text,
                 Status = cbDurum.Checked,
                 CreateDate = DateTime.Now,
+                Price = Convert.ToDecimal(txtPrice.Text),
                 Description = txtAciklama.Text,
+                StocksCount = Convert.ToInt32(txtStocksCount.Text),
                 CategoryID = (long)cbCategory.SelectedValue,
                 BrandID = (long)cbBrand.SelectedValue,
-                StocksCount = Convert.ToInt32( txtStocksCount.Text),
-                Price = Convert.ToDecimal( txtPrice.Text)
             };
+
+            dbContext.Products.Add(product);
 
             int sonuc = dbContext.SaveChanges();
 
